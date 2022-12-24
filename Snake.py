@@ -1,4 +1,4 @@
-import pygame ,sys, random, time
+import pygame ,random, sys, time
 
 # 定義顏色
 background_color = pygame.Color(255, 255, 255) # 背景色為白色
@@ -15,7 +15,7 @@ snake_x = 10 # 初始化蛇的位置(x座標)
 snake_y = 10 # 初始化蛇的位置(y座標)
 food_x = random.randint(1, 100) # 初始化食物的位置(x座標)
 food_y = random.randint(1, 60) # 初始化食物的位置(y座標)
-snake_length = 3 # 初始化蛇的長度
+snake_length = 5 # 初始化蛇的長度
 way = 1 # 初始化蛇的前進方向
 map[food_x][food_y] = -1
 
@@ -57,10 +57,10 @@ while True:
     # 繪製矩形
     for x, a1 in enumerate(map, 1):
         for y, a2 in enumerate(a1, 1):
-            if(a2 > 1):
+            if(a2 > 0):
                 map[x-1][y-1] = map[x-1][y-1]-1
                 pygame.draw.rect(screen, snake_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製蛇
-            elif(a2 < 0):
+            elif(a2 == -1):
                 pygame.draw.rect(screen, food_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製食物
     
     if(snake_x == food_x) and (snake_y == food_y):

@@ -1,4 +1,4 @@
-import pygame ,random, sys, time
+import pygame ,random, sys, time, math
 
 # 定義顏色
 background_color = pygame.Color(0, 0, 0) # 背景色為黑色
@@ -14,12 +14,13 @@ pygame.display.set_caption("貪吃蛇") # 初始化視窗標題
 map = [([0]*61) for i in range(101)] # 初始化地圖
 snake_x = 10 # 初始化蛇的位置(x座標)
 snake_y = 10 # 初始化蛇的位置(y座標)
-food_x = random.randint(1, 100) # 初始化食物的位置(x座標)
-food_y = random.randint(1, 60) # 初始化食物的位置(y座標)
-bomb_x = random.randint(1, 100) # 初始化炸彈的位置(x座標)
-bomb_y = random.randint(1, 60) # 初始化炸彈的位置(y座標)
+food_x = random.randint(6, 99) # 初始化食物的位置(x座標)
+food_y = random.randint(3, 59) # 初始化食物的位置(y座標)
+bomb_x = random.randint(6, 99) # 初始化炸彈的位置(x座標)
+bomb_y = random.randint(3, 59) # 初始化炸彈的位置(y座標)
 snake_length = 5 # 初始化蛇的長度
 way = 1 # 初始化蛇的前進方向
+
 map[food_x][food_y] = -1
 map[bomb_x][bomb_y] = -2
 
@@ -44,7 +45,7 @@ def show_score(choice, color, font, size):
 # 主程式循環
 while True:
     screen.fill(background_color) # 初始化背景顏色
-    time.sleep(0.1) # 延遲程序的執行(蛇的移動速度)
+    time.sleep(0.08) # 延遲程序的執行(蛇的移動速度)
 
     # 監聽事件
     for event in pygame.event.get():
@@ -81,23 +82,32 @@ while True:
         for y, a2 in enumerate(a1, 1):
             if(a2 > 0):
                 map[x-1][y-1] = map[x-1][y-1]-1
+                # print(map[x-1][y-1] , end="")
                 pygame.draw.rect(screen, snake_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製蛇
             elif(a2 == -1):
                 pygame.draw.rect(screen, food_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製食物
             elif(a2 == -2):
                 pygame.draw.rect(screen, bomb_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製炸彈
+        # print()
     
     # 判斷蛇吃到食物，長度與分數加一
     if(snake_x == food_x) and (snake_y == food_y):
+        map[bomb_x][bomb_y] = 0
+        bomb_x = random.randint(6, 99)
+        bomb_y = random.randint(3, 59)
+
         snake_length += 1
         score += 1
     
         # 食物消失後刷新食物與炸彈
+        while(map[bomb_x][bomb_y] != 0):
+            bomb_x = random.randint(6, 99)
+            bomb_y = random.randint(3, 59)
         while(map[food_x][food_y] != 0):
-            food_x = random.randint(1, 100)
-            food_y = random.randint(1, 60)
-            bomb_x = random.randint(1, 100)
-            bomb_y = random.randint(1, 60)
+            food_x = random.randint(6, 99)
+            food_y = random.randint(3, 59)
+
+        print(f'food: {food_x}, {food_y}; bomb: {bomb_x}, {bomb_y}')
         map[food_x][food_y] = -1
         map[bomb_x][bomb_y] = -2
     

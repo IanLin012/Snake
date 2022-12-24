@@ -4,13 +4,8 @@ import pygame ,random, sys, time
 background_color = pygame.Color(0, 0, 0) # 背景色為黑色
 snake_color = pygame.Color(0, 255, 0) # 蛇為綠色
 food_color = pygame.Color(255, 0, 0) # 食物為紅色
-bomb_color = pygame.Color(0, 0, 0) # 炸彈為黑色
-
-black = pygame.Color(0, 0, 0)
+bomb_color = pygame.Color(255, 255, 255) # 炸彈為白色
 white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
 
 # 初始化
 pygame.init() # 初始化Pygame模組
@@ -21,14 +16,15 @@ snake_x = 10 # 初始化蛇的位置(x座標)
 snake_y = 10 # 初始化蛇的位置(y座標)
 food_x = random.randint(1, 100) # 初始化食物的位置(x座標)
 food_y = random.randint(1, 60) # 初始化食物的位置(y座標)
+bomb_x = random.randint(1, 100) # 初始化炸彈的位置(x座標)
+bomb_y = random.randint(1, 60) # 初始化炸彈的位置(y座標)
 snake_length = 5 # 初始化蛇的長度
 way = 1 # 初始化蛇的前進方向
 map[food_x][food_y] = -1
-
-score = 0
+map[bomb_x][bomb_y] = -2
 
 # 初始分數
-
+score = 0
 
 # 顯示評分功能
 def show_score(choice, color, font, size):
@@ -67,16 +63,16 @@ while True:
                 way = 4
     
     # 定義蛇移動方向
-    if way == 1: 
+    if way == 1:
         snake_x += 1 
-    elif way == 2: 
+    elif way == 2:
         snake_x -= 1 
-    elif way == 3: 
+    elif way == 3:
         snake_y -= 1 
-    elif way == 4: 
+    elif way == 4:
         snake_y += 1
     
-    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0) or (map[snake_x][snake_y] > 0):
+    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0) or (map[snake_x][snake_y] > 0) or ((snake_x == bomb_x) and (snake_y == bomb_y)):
         sys.exit() # 判斷撞牆或碰到身體
     map[snake_x][snake_y] = snake_length
 
@@ -88,16 +84,22 @@ while True:
                 pygame.draw.rect(screen, snake_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製蛇
             elif(a2 == -1):
                 pygame.draw.rect(screen, food_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製食物
+            elif(a2 == -2):
+                pygame.draw.rect(screen, bomb_color, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製炸彈
     
+    # 判斷蛇吃到食物，長度與分數加一
     if(snake_x == food_x) and (snake_y == food_y):
-        snake_length += 1 # 判斷蛇吃到食物
+        snake_length += 1
         score += 1
     
-        # 食物消失後刷新食物
+        # 食物消失後刷新食物與炸彈
         while(map[food_x][food_y] != 0):
             food_x = random.randint(1, 100)
             food_y = random.randint(1, 60)
+            bomb_x = random.randint(1, 100)
+            bomb_y = random.randint(1, 60)
         map[food_x][food_y] = -1
-        
-    show_score(1, white, 'times new roman', 20)
+        map[bomb_x][bomb_y] = -2
+    
+    show_score(1, white, 'times new roman', 20) # 顯示分數
     pygame.display.update()

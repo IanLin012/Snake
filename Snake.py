@@ -1,10 +1,16 @@
 import pygame ,random, sys, time
 
 # 定義顏色
-background_color = pygame.Color(255, 255, 255) # 背景色為白色
+background_color = pygame.Color(0, 0, 0) # 背景色為黑色
 snake_color = pygame.Color(0, 255, 0) # 蛇為綠色
 food_color = pygame.Color(255, 0, 0) # 食物為紅色
 bomb_color = pygame.Color(0, 0, 0) # 炸彈為黑色
+
+black = pygame.Color(0, 0, 0)
+white = pygame.Color(255, 255, 255)
+red = pygame.Color(255, 0, 0)
+green = pygame.Color(0, 255, 0)
+blue = pygame.Color(0, 0, 255)
 
 # 初始化
 pygame.init() # 初始化Pygame模組
@@ -18,6 +24,26 @@ food_y = random.randint(1, 60) # 初始化食物的位置(y座標)
 snake_length = 5 # 初始化蛇的長度
 way = 1 # 初始化蛇的前進方向
 map[food_x][food_y] = -1
+
+score = 0
+
+# 初始分數
+
+
+# 顯示評分功能
+def show_score(choice, color, font, size):
+	
+	# 建立字型物件 score_font
+	score_font = pygame.font.SysFont(font, size)
+	
+	# 建立顯示錶面對象 core_surface
+	score_surface = score_font.render('Score : ' + str(score), True, color)
+	
+	# 為文字表面物件建立一個矩形物件
+	score_rect = score_surface.get_rect()
+	
+	# 顯示文字
+	screen.blit(score_surface, score_rect)
 
 # 主程式循環
 while True:
@@ -65,11 +91,20 @@ while True:
     
     if(snake_x == food_x) and (snake_y == food_y):
         snake_length += 1 # 判斷蛇吃到食物
+        score += 1
     
         # 食物消失後刷新食物
         while(map[food_x][food_y] != 0):
             food_x = random.randint(1, 100)
             food_y = random.randint(1, 60)
         map[food_x][food_y] = -1
-    
+        
+    show_score(1, white, 'times new roman', 20)
     pygame.display.update()
+    
+    
+	
+	
+	
+	
+	

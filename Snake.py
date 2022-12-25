@@ -20,8 +20,8 @@ way = 1 # 初始化蛇的前進方向
 food_x = random.randint(7, 99)
 food_y = random.randint(3, 59)
 # 初始化炸彈的位置
-bomb_x = random.randint(7, 99)
-bomb_y = random.randint(3, 59)
+bomb_x = random.randint(7, 98)
+bomb_y = random.randint(3, 58)
 # 初始化食物與炸彈在列表中的值
 map[food_x][food_y] = -1
 map[bomb_x][bomb_y] = -2 
@@ -75,7 +75,7 @@ while True:
     elif way == 4:
         snake_y += 1
     # 判斷撞牆或碰到身體或碰到炸彈時關閉程式
-    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0) or (map[snake_x][snake_y] > 0) or ((snake_x == bomb_x) and (snake_y == bomb_y)):
+    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0) or (map[snake_x][snake_y] > 0) or ((snake_x == bomb_x) and (snake_y == bomb_y)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y)) or ((snake_x == bomb_x) and (snake_y == bomb_y+1)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y+1)):
         sys.exit()
     map[snake_x][snake_y] = snake_length # 儲存蛇在列表中的長度
     # 繪製矩形
@@ -89,22 +89,22 @@ while True:
             elif(a2 == -1):
                 pygame.draw.rect(screen, red, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製食物
             elif(a2 == -2):
-                pygame.draw.rect(screen, white, ((x-1)*10, (y-1)*10, 10, 10)) # 繪製炸彈
+                pygame.draw.rect(screen, white, ((x-1)*10, (y-1)*10, 20, 20)) # 繪製炸彈
     # 判斷蛇吃到食物
     if(snake_x == food_x) and (snake_y == food_y):
         snake_length += 1
         score += 1
         # 刷新炸彈
         map[bomb_x][bomb_y] = 0
-        bomb_x = random.randint(7, 99)
-        bomb_y = random.randint(3, 59)
+        bomb_x = random.randint(7, 98)
+        bomb_y = random.randint(3, 58)
         # 食物消失後刷新食物與炸彈，直到不會與其他物體重疊
         while(map[food_x][food_y] != 0):
             food_x = random.randint(7, 99)
             food_y = random.randint(3, 59)
         while(map[bomb_x][bomb_y] != 0):
-            bomb_x = random.randint(7, 99)
-            bomb_y = random.randint(3, 59)
+            bomb_x = random.randint(7, 98)
+            bomb_y = random.randint(3, 58)
         # 重置食物與炸彈在列表中的值
         map[food_x][food_y] = -1
         map[bomb_x][bomb_y] = -2

@@ -36,13 +36,13 @@ def show_score():
 
 # 設定蛇的移動速度 time.sleep(延遲程式執行的秒數)
 def snake_speed():
-    if(score <= 5):
+    if(score <= 3):
         time.sleep(0.1)
-    elif(5 < score <= 10):
+    elif(3 < score <= 6):
         time.sleep(0.08)
-    elif(10 < score <= 15):
+    elif(6 < score <= 9):
         time.sleep(0.05)
-    elif(15 < score <= 20):
+    elif(9 < score <= 12):
         time.sleep(0.03)
     else:
         time.sleep(0.01)

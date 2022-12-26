@@ -1,3 +1,4 @@
+# 導入模組
 import pygame ,random, sys, time
 
 # 定義顏色
@@ -36,21 +37,33 @@ def show_score():
 
 # 設定蛇的移動速度 time.sleep(延遲程式執行的秒數)
 def snake_speed():
-    if(score <= 3):
+    if(score <= 2):
         time.sleep(0.1)
-    elif(3 < score <= 6):
+    elif(2 < score <= 4):
+        time.sleep(0.09)
+    elif(4 < score <= 6):
         time.sleep(0.08)
-    elif(6 < score <= 9):
+    elif(6 < score <= 8):
+        time.sleep(0.07)
+    elif(8 < score <= 10):
+        time.sleep(0.06)
+    elif(10 < score <= 12):
         time.sleep(0.05)
-    elif(9 < score <= 12):
+    elif(12 < score <= 14):
+        time.sleep(0.04)
+    elif(14 < score <= 16):
         time.sleep(0.03)
-    else:
+    elif(16 < score <= 18):
+        time.sleep(0.02)
+    elif(18 < score <= 20):
         time.sleep(0.01)
+    else:
+        time.sleep(0.001)
 
 # 主程式循環
 while True:
     screen.fill(black) # 初始化背景顏色
-    snake_speed()
+    snake_speed() # 
     # 監測事件 點擊關閉按鈕後關閉程式
     for event in pygame.event.get():
         if(event.type == pygame.QUIT):
@@ -75,8 +88,12 @@ while True:
     elif way == 4:
         snake_y += 1
     # 判斷撞牆或碰到身體或碰到炸彈時關閉程式
-    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0) or (map[snake_x][snake_y] > 0) or ((snake_x == bomb_x) and (snake_y == bomb_y)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y)) or ((snake_x == bomb_x) and (snake_y == bomb_y+1)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y+1)):
-        sys.exit()
+    if (snake_x >= 100) or (snake_y >= 60) or (snake_x < 0) or (snake_y < 0):
+        sys.exit() # 撞牆
+    elif(map[snake_x][snake_y] > 0):
+        sys.exit() # 碰到身體
+    elif((snake_x == bomb_x) and (snake_y == bomb_y)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y)) or ((snake_x == bomb_x) and (snake_y == bomb_y+1)) or ((snake_x == bomb_x+1) and (snake_y == bomb_y+1)):
+        sys.exit() # 碰到炸彈
     map[snake_x][snake_y] = snake_length # 儲存蛇在列表中的長度
     # 繪製矩形
     # for 位置, 索引值 in enumerate(列表, 位置起始值) 
